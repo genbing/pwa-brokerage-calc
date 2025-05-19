@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 
-function calculateCharges(price, shares, brokeragePercent) {
+function calculateCharges(price, shares, brokeragePercent, buy = false) {
   shares = shares * 100;
   const brokerageRate = brokeragePercent / 100;
   const clearingFeeRate = 0.03 / 100;
@@ -12,7 +12,9 @@ function calculateCharges(price, shares, brokeragePercent) {
   const clearing = Math.min(Math.ceil(value * clearingFeeRate * 100) / 100, 1000);
   const stampDuty = value > 0 ? Math.min(Math.floor(value / 1000) * stampDutyPer1000, 1000) + 1 : 0;
   const totalCharges = brokerage + clearing + stampDuty;
-  const total = value + totalCharges;
+  
+  // Calculate total based on buy/sell
+  const total = buy ? value + totalCharges : value - totalCharges;
 
   return {
     Total: total,
@@ -34,8 +36,8 @@ function App() {
 
   const handleCalculate = (e) => {
     e.preventDefault();
-    const buy = calculateCharges(parseFloat(buyPrice), parseInt(shares), parseFloat(brokerage));
-    const sell = calculateCharges(parseFloat(sellPrice), parseInt(shares), parseFloat(brokerage));
+    const buy = calculateCharges(parseFloat(buyPrice), parseInt(shares), parseFloat(brokerage), true);
+    const sell = calculateCharges(parseFloat(sellPrice), parseInt(shares), parseFloat(brokerage), false);
     setBuyResult(buy);
     setSellResult(sell);
   };
