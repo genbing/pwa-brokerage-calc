@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/pwa-brokerage-calc/sw.js', { scope: '/pwa-brokerage-calc/' })})}
