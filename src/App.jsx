@@ -10,7 +10,7 @@ function calculateCharges(price, shares, brokeragePercent) {
   const value = price * shares;
   const brokerage = value * brokerageRate;
   const clearing = Math.min(Math.ceil(value * clearingFeeRate * 100) / 100, 1000);
-  const stampDuty = Math.min(Math.floor(value / 1000) * stampDutyPer1000, 1000) + 1;
+  const stampDuty = value > 0 ? Math.min(Math.floor(value / 1000) * stampDutyPer1000, 1000) + 1 : 0;
   const totalCharges = brokerage + clearing + stampDuty;
   const total = value + totalCharges;
 
@@ -25,9 +25,9 @@ function calculateCharges(price, shares, brokeragePercent) {
 }
 
 function App() {
-  const [buyPrice, setBuyPrice] = useState('0.51925');
-  const [sellPrice, setSellPrice] = useState('0.61199');
-  const [shares, setShares] = useState('3090');
+  const [buyPrice, setBuyPrice] = useState('0.2');
+  const [sellPrice, setSellPrice] = useState('0.21');
+  const [shares, setShares] = useState('1');
   const [brokerage, setBrokerage] = useState('0.42');
   const [buyResult, setBuyResult] = useState(null);
   const [sellResult, setSellResult] = useState(null);
